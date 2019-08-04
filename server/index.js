@@ -20,6 +20,13 @@ app.post('/groups', (req, res) => {
     .catch(err => res.json(err));
 });
 
+app.delete('/groups/:id', (req, res) => {
+  const { id } = req.params;
+  groups.delete(id)
+    .then(deletedGroup => res.json(deletedGroup))
+    .catch(err => res.json(err));
+});
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
