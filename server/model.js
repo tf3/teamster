@@ -15,7 +15,6 @@ module.exports.find = (groupId) => {
 };
 
 module.exports.delete = groupId => (
-  performOperation(collection => (
-    collection.deleteOne({ _id: ObjectID(groupId) })
-  ))
+  performOperation(collection => collection.findOneAndDelete({ _id: ObjectID(groupId) }))
+    .then(res => res.value)
 );
