@@ -54,7 +54,8 @@ app.get('/:id', (req, res) => {
 
   groups.find(id)
     .then(() => res.sendFile(path.resolve('dist/app.html')))
-    .catch(() => res.sendFile(path.resolve('dist/404.html')));
+    .catch(() => res.status(404)
+      .sendFile(path.resolve('dist/404.html')));
 });
 
 
