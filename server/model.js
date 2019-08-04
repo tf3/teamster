@@ -3,6 +3,7 @@ const performOperation = require('./db.js');
 
 module.exports.add = group => (
   performOperation(collection => collection.insertOne(group))
+    .then(res => res.ops[0])
 );
 
 module.exports.find = (groupId) => {
