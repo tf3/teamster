@@ -14,6 +14,14 @@ module.exports.find = (groupId) => {
   return performOperation(collection => collection.find().toArray());
 };
 
+module.exports.update = (groupId, updatedGroup) => (
+  performOperation(collection => (
+    collection.findOneAndUpdate({ _id: ObjectID(groupId) }, { $set: updatedGroup },
+      { returnOriginal: false })
+  ))
+    .then(res => res.value)
+);
+
 module.exports.delete = groupId => (
   performOperation(collection => collection.findOneAndDelete({ _id: ObjectID(groupId) }))
     .then(res => res.value)

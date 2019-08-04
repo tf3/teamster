@@ -8,6 +8,7 @@ app.use(express.json());
 
 app.get('/groups/:id?', (req, res) => {
   const { id } = req.params;
+
   groups.find(id)
     .then(group => res.json(group))
     .catch(err => res.json(err));
@@ -15,13 +16,24 @@ app.get('/groups/:id?', (req, res) => {
 
 app.post('/groups', (req, res) => {
   const group  = req.body;
+
   groups.add(group)
     .then(() => res.json(group))
     .catch(err => res.json(err));
 });
 
+app.put('/groups/:id', (req, res) => {
+  const { id } = req.params;
+  const group = req.body;
+
+  groups.update(id, group)
+    .then(updatedGroup => res.json(updatedGroup))
+    .catch(err => res.json(err));
+});
+
 app.delete('/groups/:id', (req, res) => {
   const { id } = req.params;
+
   groups.delete(id)
     .then(deletedGroup => res.json(deletedGroup))
     .catch(err => res.json(err));
