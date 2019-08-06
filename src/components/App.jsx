@@ -28,6 +28,41 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = placeholderState;
+
+    this.resetTeams = this.resetTeams.bind(this);
+    this.getAllMembers = this.getAllMembers.bind(this);
+    this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
+  }
+
+  getAllMembers() {
+    const { teams } = this.state;
+
+    return teams.reduce((allMembers, team) => (
+      allMembers.concat(team.members)
+    ), []);
+  }
+
+  getTeamsWithoutMembers() {
+    const { teams } = this.state;
+
+    return teams.map((team) => {
+      return {
+        name: team.name,
+        maxMembers: team.maxMembers,
+        members: [],
+      }
+    });
+  }
+
+  // Moves all team members to unassigned. The team names and max members are unchanged.
+  resetTeams() {
+    const { unassigned } = this.state;
+    const oldTeamMembers = this.getAllMembers();
+
+    this.setState({
+      teams: this.getTeamsWithoutMembers(),
+      unassigned: unassigned.concat(oldTeamMembers),
+    });
   }
 
   render() {
@@ -40,7 +75,7 @@ class App extends React.Component {
           {teams.map(team => <TeamList team={team} />)}
           <AddTeamForm />
         </div>
-        <UnassignedList unassigned={unassigned} />
+        <UnassignedList unassigned={unassigned} resetTeams={this.resetTeams} />
       </div>
     );
   }
