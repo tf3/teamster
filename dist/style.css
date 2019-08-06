@@ -1,0 +1,9 @@
+.teams {
+  display: flex;
+}
+
+.team {
+  border: 1px solid;
+  /* max-width: 10em; */
+  padding: 1em;
+}
