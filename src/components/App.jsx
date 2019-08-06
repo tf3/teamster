@@ -29,9 +29,11 @@ class App extends React.Component {
     super(props);
     this.state = placeholderState;
 
-    this.resetTeams = this.resetTeams.bind(this);
+    this.allTeamsFull = this.allTeamsFull.bind(this);
+    this.assignTeams = this.assignTeams.bind(this);
     this.getAllMembers = this.getAllMembers.bind(this);
     this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
+    this.resetTeams = this.resetTeams.bind(this);
   }
 
   getAllMembers() {
@@ -65,6 +67,30 @@ class App extends React.Component {
     });
   }
 
+  allTeamsFull() {
+    const { teams } = this.state;
+    return !teams.some(team => team.members.length < team.maxMembers);
+  }
+
+  assignTeams() {
+    const { unassigned, teams } = this.state;
+    const newTeams = teams.slice(0);
+
+    while (unassigned.length > 0 && !this.allTeamsFull()) {
+      newTeams.forEach((team) => {
+        if (team.members.length < team.maxMembers) {
+          const person = unassigned.pop();
+          if (person) team.members.push(person);
+        }
+      });
+    }
+
+    this.setState({
+      unassigned,
+      teams: newTeams,
+    });
+  }
+
   render() {
     const { teams, unassigned } = this.state;
 
@@ -75,7 +101,8 @@ class App extends React.Component {
           {teams.map(team => <TeamList team={team} />)}
           <AddTeamForm />
         </div>
-        <UnassignedList unassigned={unassigned} resetTeams={this.resetTeams} />
+        <button onClick={this.allTeamsFull}>ATF</button>
+        <UnassignedList unassigned={unassigned} assignTeams={this.assignTeams} resetTeams={this.resetTeams} />
       </div>
     );
   }
