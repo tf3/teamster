@@ -1,6 +1,7 @@
 import React from 'react';
 import TeamList from './TeamList.jsx';
 import UnassignedList from './UnassignedList.jsx';
+import AddTeamForm from './AddTeamForm.jsx';
 
 const placeholderState = {
   teams: [
@@ -13,6 +14,11 @@ const placeholderState = {
       name: 'Blue',
       maxMembers: 5,
       members: [{ name: 'Jane' }, { name: 'Lane' }, { name: 'John' }],
+    },
+    {
+      name: 'Green',
+      maxMembers: 3,
+      members: [{ name: 'Sally' }, { name: 'Jen' }],
     },
   ],
   unassigned: [{ name: 'Alex' }, { name: 'Alicia' }],
@@ -30,7 +36,10 @@ class App extends React.Component {
     return (
       <div>
         <h1>Team Builder</h1>
-        {teams.map(team => <TeamList team={team} />)}
+        <div className="teams">
+          {teams.map(team => <TeamList team={team} />)}
+          <AddTeamForm />
+        </div>
         <UnassignedList unassigned={unassigned} />
       </div>
     );
