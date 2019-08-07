@@ -33,6 +33,8 @@ class AddTeamForm extends React.Component {
       name: '',
       maxMembers: '',
     });
+
+    e.target.name.focus();
   }
 
   render() {
