@@ -117,7 +117,6 @@ class App extends React.Component {
 
     return (
       <div>
-        <h1>Team Builder</h1>
         <div className="teams">
           {teams.map(team => <TeamList team={team} />)}
           <AddTeamForm addTeam={this.addTeam} />

@@ -1,9 +1,55 @@
-.teams {
-  display: flex;
+body {
+  background: #eee;
+  font-family: sans-serif;
+  font-size: 15pt;
+  margin: 0;
 }
 
-.team {
+header {
+  background: #5353ea;
+  color: #eee;
+  margin: 0;
+  padding: 0.5em;
+}
+
+header h1 {
+  font-weight: normal;
+}
+
+#app, .container {
+  margin: 0 auto;
+  max-width: 46em;
+}
+
+.teams {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.teams p {
+  font-style: italic;
+}
+
+.team, .unassigned {
+  background: #fff;
   border: 1px solid;
-  /* max-width: 10em; */
+  border-radius: 0.5em;
+  margin: 0.5em;
   padding: 1em;
+}
+
+label {
+  display: block;
+}
+
+button {
+  background:#5353ea;
+  border: none;
+  color: #fff;
+  font-size: 1em;
+  padding: 0.5em;
+}
+
+input {
+  font-size: 1em;
 }
