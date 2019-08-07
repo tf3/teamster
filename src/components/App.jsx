@@ -30,6 +30,7 @@ class App extends React.Component {
     this.state = placeholderState;
 
     this.addPerson = this.addPerson.bind(this);
+    this.addTeam = this.addTeam.bind(this);
     this.allTeamsFull = this.allTeamsFull.bind(this);
     this.assignTeams = this.assignTeams.bind(this);
     this.getAllMembers = this.getAllMembers.bind(this);
@@ -61,6 +62,15 @@ class App extends React.Component {
     const { unassigned } = this.state;
     this.setState({
       unassigned: [...unassigned, person],
+    });
+  }
+
+  addTeam(team) {
+    const { teams } = this.state;
+    console.log([...teams, team]);
+
+    this.setState({
+      teams: [...teams, team],
     });
   }
 
@@ -107,7 +117,7 @@ class App extends React.Component {
         <h1>Team Builder</h1>
         <div className="teams">
           {teams.map(team => <TeamList team={team} />)}
-          <AddTeamForm />
+          <AddTeamForm addTeam={this.addTeam} />
         </div>
         <UnassignedList
           unassigned={unassigned}
