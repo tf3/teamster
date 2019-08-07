@@ -3,6 +3,11 @@ import TeamList from './TeamList.jsx';
 import UnassignedList from './UnassignedList.jsx';
 import AddTeamForm from './AddTeamForm.jsx';
 
+const popRandom = (array) => {
+  const index = Math.floor(Math.random() * array.length);
+  return array.splice(index, 1)[0];
+};
+
 const placeholderState = {
   teams: [
     {
@@ -49,13 +54,11 @@ class App extends React.Component {
   getTeamsWithoutMembers() {
     const { teams } = this.state;
 
-    return teams.map((team) => {
-      return {
-        name: team.name,
-        maxMembers: team.maxMembers,
-        members: [],
-      }
-    });
+    return teams.map(team => ({
+      name: team.name,
+      maxMembers: team.maxMembers,
+      members: [],
+    }));
   }
 
   addPerson(person) {
@@ -97,7 +100,7 @@ class App extends React.Component {
     while (unassigned.length > 0 && !this.allTeamsFull()) {
       newTeams.forEach((team) => {
         if (team.members.length < team.maxMembers) {
-          const person = unassigned.pop();
+          const person = popRandom(unassigned);
           if (person) team.members.push(person);
         }
       });
