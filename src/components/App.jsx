@@ -38,6 +38,7 @@ class App extends React.Component {
     this.addTeam = this.addTeam.bind(this);
     this.allTeamsFull = this.allTeamsFull.bind(this);
     this.assignTeams = this.assignTeams.bind(this);
+    this.deleteTeam = this.deleteTeam.bind(this);
     this.getAllMembers = this.getAllMembers.bind(this);
     this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
     this.resetTeams = this.resetTeams.bind(this);
@@ -74,6 +75,18 @@ class App extends React.Component {
 
     this.setState({
       teams: [...teams, team],
+    });
+  }
+
+  deleteTeam(teamName) {
+    console.log(teamName);
+    const { teams, unassigned } = this.state;
+    const teamToDelete = teams.find(({ name }) => name === teamName);
+    const people = teamToDelete.members;
+
+    this.setState({
+      teams: teams.filter(({ name }) => name !== teamName),
+      unassigned: [...unassigned, ...people],
     });
   }
 
@@ -118,7 +131,7 @@ class App extends React.Component {
     return (
       <div>
         <div className="teams">
-          {teams.map(team => <TeamList team={team} />)}
+          {teams.map(team => <TeamList team={team} deleteTeam={this.deleteTeam} />)}
           <AddTeamForm addTeam={this.addTeam} />
         </div>
         <UnassignedList

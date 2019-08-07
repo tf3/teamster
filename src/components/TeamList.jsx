@@ -1,7 +1,8 @@
 import React from 'react';
 
-const TeamList = ({ team }) => (
+const TeamList = ({ team, deleteTeam }) => (
   <div className="team">
+    <button onClick={() => deleteTeam(team.name)}>❌</button>
     <h3>{team.name} ({team.members.length}/{team.maxMembers})</h3>
     {team.members.length === 0 ? (
       <p>No members</p>
