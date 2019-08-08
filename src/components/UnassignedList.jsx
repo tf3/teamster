@@ -1,10 +1,15 @@
 import React from 'react';
 import AddPersonForm from './AddPersonForm.jsx';
 
-const UnassignedList = ({ unassigned, addPeople, assignTeams, deletePerson, resetTeams }) => (
+const UnassignedList = ({ unassigned, addPeople, assignTeams, reassignTeams, deletePerson, resetTeams, allTeamsFull }) => (
   <div className="unassigned">
-    <div class="controls">
-      <button onClick={assignTeams}>Assign teams</button> <button onClick={resetTeams}>Reset teams</button>
+    <div className="controls">
+      {(unassigned.length === 0 || allTeamsFull()) ? (
+        <button onClick={reassignTeams}>Re-assign teams</button>
+      ) : (
+        <button onClick={assignTeams}>Assign teams</button>
+      )}
+      &nbsp; <button onClick={resetTeams}>Reset teams</button>
     </div>
     <h3>Not assigned to a team</h3>
     <ol>

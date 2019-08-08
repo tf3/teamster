@@ -38,6 +38,7 @@ class App extends React.Component {
     this.addTeam = this.addTeam.bind(this);
     this.allTeamsFull = this.allTeamsFull.bind(this);
     this.assignTeams = this.assignTeams.bind(this);
+    this.reassignTeams = this.reassignTeams.bind(this);
     this.deletePerson = this.deletePerson.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
     this.getAllMembers = this.getAllMembers.bind(this);
@@ -97,14 +98,15 @@ class App extends React.Component {
   }
 
   // Moves all team members to unassigned. The team names and max members are unchanged.
-  resetTeams() {
+  resetTeams(callback) {
+    if (!(callback instanceof Function)) callback = undefined;
     const { unassigned } = this.state;
     const oldTeamMembers = this.getAllMembers();
 
     this.setState({
       teams: this.getTeamsWithoutMembers(),
       unassigned: unassigned.concat(oldTeamMembers),
-    });
+    }, callback);
   }
 
   allTeamsFull() {
@@ -131,6 +133,10 @@ class App extends React.Component {
     });
   }
 
+  reassignTeams() {
+    this.resetTeams(this.assignTeams);
+  }
+
   render() {
     const { teams, unassigned } = this.state;
 
@@ -143,9 +149,11 @@ class App extends React.Component {
         <UnassignedList
           unassigned={unassigned}
           assignTeams={this.assignTeams}
+          reassignTeams={this.reassignTeams}
           resetTeams={this.resetTeams}
           addPeople={this.addPeople}
           deletePerson={this.deletePerson}
+          allTeamsFull={this.allTeamsFull}
         />
       </div>
     );
