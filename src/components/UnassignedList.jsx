@@ -1,7 +1,7 @@
 import React from 'react';
 import AddPersonForm from './AddPersonForm.jsx';
 
-const UnassignedList = ({ unassigned, addPerson, assignTeams, deletePerson, resetTeams }) => (
+const UnassignedList = ({ unassigned, addPeople, assignTeams, deletePerson, resetTeams }) => (
   <div className="unassigned">
     <div class="controls">
       <button onClick={assignTeams}>Assign teams</button> <button onClick={resetTeams}>Reset teams</button>
@@ -10,7 +10,7 @@ const UnassignedList = ({ unassigned, addPerson, assignTeams, deletePerson, rese
     <ol>
       {unassigned.map(person => <li>{person.name} <button onClick={() => deletePerson(person.name)}>❌</button></li>)}
     </ol>
-    <AddPersonForm addPerson={addPerson} />
+    <AddPersonForm addPeople={addPeople} />
   </div>
 );
 

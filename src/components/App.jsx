@@ -34,7 +34,7 @@ class App extends React.Component {
     super(props);
     this.state = placeholderState;
 
-    this.addPerson = this.addPerson.bind(this);
+    this.addPeople = this.addPeople.bind(this);
     this.addTeam = this.addTeam.bind(this);
     this.allTeamsFull = this.allTeamsFull.bind(this);
     this.assignTeams = this.assignTeams.bind(this);
@@ -63,10 +63,10 @@ class App extends React.Component {
     }));
   }
 
-  addPerson(person) {
+  addPeople(people) {
     const { unassigned } = this.state;
     this.setState({
-      unassigned: [...unassigned, person],
+      unassigned: [...unassigned, ...people],
     });
   }
 
@@ -79,7 +79,6 @@ class App extends React.Component {
 
   addTeam(team) {
     const { teams } = this.state;
-    console.log([...teams, team]);
 
     this.setState({
       teams: [...teams, team],
@@ -87,7 +86,6 @@ class App extends React.Component {
   }
 
   deleteTeam(teamName) {
-    console.log(teamName);
     const { teams, unassigned } = this.state;
     const teamToDelete = teams.find(({ name }) => name === teamName);
     const people = teamToDelete.members;
@@ -146,7 +144,7 @@ class App extends React.Component {
           unassigned={unassigned}
           assignTeams={this.assignTeams}
           resetTeams={this.resetTeams}
-          addPerson={this.addPerson}
+          addPeople={this.addPeople}
           deletePerson={this.deletePerson}
         />
       </div>

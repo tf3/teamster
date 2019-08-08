@@ -38,6 +38,33 @@ header h1 {
   padding: 1em;
 }
 
+.team {
+  animation: appearFromRight 0.2s ease-in;
+}
+
+@keyframes appearFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(4em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes appearFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(1em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 .team button {
   float: right;
   background: none;
@@ -62,6 +89,10 @@ label {
   visibility: hidden;
   margin: 0;
   padding: 0;
+}
+
+.unassigned li, .team li {
+  animation: appearFromBottom 0.1s ease-in;
 }
 
 .unassigned li:hover button {
