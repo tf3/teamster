@@ -38,6 +38,7 @@ class App extends React.Component {
     this.addTeam = this.addTeam.bind(this);
     this.allTeamsFull = this.allTeamsFull.bind(this);
     this.assignTeams = this.assignTeams.bind(this);
+    this.deletePerson = this.deletePerson.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
     this.getAllMembers = this.getAllMembers.bind(this);
     this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
@@ -66,6 +67,13 @@ class App extends React.Component {
     const { unassigned } = this.state;
     this.setState({
       unassigned: [...unassigned, person],
+    });
+  }
+
+  deletePerson(personName) {
+    const { unassigned } = this.state;
+    this.setState({
+      unassigned: unassigned.filter(({ name }) => name !== personName),
     });
   }
 
@@ -139,6 +147,7 @@ class App extends React.Component {
           assignTeams={this.assignTeams}
           resetTeams={this.resetTeams}
           addPerson={this.addPerson}
+          deletePerson={this.deletePerson}
         />
       </div>
     );
