@@ -1,13 +1,17 @@
-const mongo = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.DB_PORT || '27017';
 
-const performOperation = operation => (
-  mongo.connect(`mongodb://${host}/${port}`, { useNewUrlParser: true })
-    .then(client => client.db('team-builder'))
-    .then(db => db.collection('groups'))
-    .then(operation)
-);
+mongoose.connect(`mongodb://${host}:${port}/team-builder`, { useNewUrlParser: true });
+const db = mongoose.connection;
 
-module.exports = performOperation;
+db.on('connect', () => {
+  console.log('Connected to MongoDB successfully.');
+});
+
+db.on('error', (err) => {
+  console.log('Error connecting to MongoDB:', err);
+});
+
+module.exports = db;
