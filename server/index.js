@@ -44,7 +44,7 @@ app.delete('/groups/:id', (req, res) => {
 
 // Other routes
 app.get('/new', (req, res) => {
-  groups.add({})
+  groups.add({ teams: [], unassigned: [] })
     .then(({ _id }) => res.redirect(`/${_id}`))
     .catch(err => res.json(err));
 });

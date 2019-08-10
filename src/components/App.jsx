@@ -8,31 +8,12 @@ const popRandom = (array) => {
   return array.splice(index, 1)[0];
 };
 
-const placeholderState = {
-  teams: [
-    {
-      name: 'Red',
-      maxMembers: 5,
-      members: [{ name: 'Thomas' }, { name: 'Joe' }],
-    },
-    {
-      name: 'Blue',
-      maxMembers: 5,
-      members: [{ name: 'Jane' }, { name: 'Lane' }, { name: 'John' }],
-    },
-    {
-      name: 'Green',
-      maxMembers: 3,
-      members: [{ name: 'Sally' }, { name: 'Jen' }],
-    },
-  ],
-  unassigned: [{ name: 'Alex' }, { name: 'Alicia' }],
-};
+const getId = () => document.location.pathname.slice(1);
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = placeholderState;
+    this.state = { teams: [], unassigned: [] };
 
     this.addPeople = this.addPeople.bind(this);
     this.addTeam = this.addTeam.bind(this);
@@ -42,8 +23,15 @@ class App extends React.Component {
     this.deletePerson = this.deletePerson.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
     this.getAllMembers = this.getAllMembers.bind(this);
+    this.fetchFromServer = this.fetchFromServer.bind(this);
     this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
     this.resetTeams = this.resetTeams.bind(this);
+    this.sendToServer = this.sendToServer.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchFromServer();
+    setInterval(this.fetchFromServer, 2000);
   }
 
   getAllMembers() {
@@ -68,14 +56,14 @@ class App extends React.Component {
     const { unassigned } = this.state;
     this.setState({
       unassigned: [...unassigned, ...people],
-    });
+    }, this.sendToServer);
   }
 
   deletePerson(personName) {
     const { unassigned } = this.state;
     this.setState({
       unassigned: unassigned.filter(({ name }) => name !== personName),
-    });
+    }, this.sendToServer);
   }
 
   addTeam(team) {
@@ -83,7 +71,7 @@ class App extends React.Component {
 
     this.setState({
       teams: [...teams, team],
-    });
+    }, this.sendToServer);
   }
 
   deleteTeam(teamName) {
@@ -94,7 +82,7 @@ class App extends React.Component {
     this.setState({
       teams: teams.filter(({ name }) => name !== teamName),
       unassigned: [...unassigned, ...people],
-    });
+    }, this.sendToServer);
   }
 
   // Moves all team members to unassigned. The team names and max members are unchanged.
@@ -105,7 +93,10 @@ class App extends React.Component {
     this.setState({
       teams: this.getTeamsWithoutMembers(),
       unassigned: unassigned.concat(oldTeamMembers),
-    }, callback);
+    }, () => {
+      if (callback) callback();
+      this.sendToServer();
+    });
   }
 
   allTeamsFull() {
@@ -129,11 +120,33 @@ class App extends React.Component {
     this.setState({
       unassigned,
       teams: newTeams,
-    });
+    }, this.sendToServer);
   }
 
   reassignTeams() {
     this.resetTeams(this.assignTeams);
+  }
+
+  sendToServer() {
+    const { teams, unassigned } = this.state;
+
+    fetch(`/groups/${getId()}`, {
+      method: 'PUT',
+      body: JSON.stringify({ teams, unassigned }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(console.log)
+      .catch(console.log);
+  }
+
+  fetchFromServer() {
+    fetch(`/groups/${getId()}`)
+      .then(response => response.json())
+      .then(data => this.setState(data)) // TODO: check to make sure there's not an error
+      .catch(console.log);
   }
 
   render() {
