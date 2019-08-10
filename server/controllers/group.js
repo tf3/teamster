@@ -1,6 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 const db = require('../db.js');
 const Group = require('../models/group.js');
-
 
 module.exports.add = newGroup => (
   Group.create(newGroup)
@@ -14,9 +14,9 @@ module.exports.find = (groupId) => {
 };
 
 module.exports.update = (groupId, changes) => (
-  Group.findByIdAndUpdate(groupId, changes, { new: true })
+  Group.findByIdAndUpdate(groupId, changes, { new: true, useFindAndModify: false })
 );
 
 module.exports.delete = groupId => (
-  Group.findByIdAndDelete(groupId)
+  Group.findByIdAndDelete(groupId, { useFindAndModify: false })
 );
