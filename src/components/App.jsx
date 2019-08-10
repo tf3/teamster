@@ -10,6 +10,33 @@ const popRandom = (array) => {
 
 const getId = () => document.location.pathname.slice(1);
 
+const makeLine = (teams, i) => (
+  teams.reduce((line, team) => {
+    if (team.members[i]) {
+      line.push(team.members[i].name);
+    } else {
+      line.push('');
+    }
+    return line;
+  }, []).join(',')
+);
+
+const generateCSV = ({ teams, unassigned }) => {
+  const csv = [];
+  const headings = [...teams.map(team => team.name), 'unassigned'];
+  csv.push(headings.join(','));
+
+  const limit = Math.max(teams.reduce((maxMembers, team) => (
+    team.members.length > maxMembers ? team.members.length : maxMembers
+  ), -Infinity), unassigned.length);
+
+  for (let i = 0; i < limit; i += 1) {
+    csv.push(`${makeLine(teams, i)},${(unassigned[i] && unassigned[i].name) || ''}`);
+  }
+
+  return csv.join('\n');
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +52,7 @@ class App extends React.Component {
     this.getAllMembers = this.getAllMembers.bind(this);
     this.fetchFromServer = this.fetchFromServer.bind(this);
     this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
+    this.downloadCSV = this.downloadCSV.bind(this);
     this.resetTeams = this.resetTeams.bind(this);
     this.sendToServer = this.sendToServer.bind(this);
   }
@@ -138,7 +166,6 @@ class App extends React.Component {
       },
     })
       .then(response => response.json())
-      .then(console.log)
       .catch(console.log);
   }
 
@@ -147,6 +174,19 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data => this.setState(data)) // TODO: check to make sure there's not an error
       .catch(console.log);
+  }
+
+  downloadCSV() {
+    const { teams, unassigned } = this.state;
+    const csv = generateCSV({ teams, unassigned });
+    const link = document.createElement('a');
+
+    link.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(csv)}`);
+    link.setAttribute('download', 'teams.csv');
+    link.style.display = 'none';
+    document.body.append(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   render() {
@@ -167,6 +207,9 @@ class App extends React.Component {
           deletePerson={this.deletePerson}
           allTeamsFull={this.allTeamsFull}
         />
+        <div className="bottom">
+          <button type="button" onClick={this.downloadCSV}>Download CSV</button>
+        </div>
       </div>
     );
   }

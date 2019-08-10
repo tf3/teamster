@@ -30,7 +30,7 @@ header h1 {
   font-style: italic;
 }
 
-.team, .unassigned {
+.team, .unassigned, .bottom {
   background: #fff;
   border: 1px solid;
   border-radius: 0.5em;
@@ -76,7 +76,7 @@ label {
   visibility: visible;
 }
 
-.controls button, a.button {
+.controls button, a.button, .bottom button {
   background:#5353ea;
   border: none;
   color: #fff;
