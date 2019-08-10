@@ -21,6 +21,10 @@ header h1 {
   max-width: 46em;
 }
 
+h3 {
+  margin: 0.7em 0;
+}
+
 .teams {
   display: flex;
   flex-wrap: wrap;
