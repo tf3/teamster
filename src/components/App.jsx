@@ -37,6 +37,14 @@ const generateCSV = ({ teams, unassigned }) => {
   return csv.join('\n');
 };
 
+const copyLink = () => {
+  // const link = document.querySelector('#link');
+  const link = document.getElementById('link');
+  link.select();
+  document.execCommand('copy');
+  console.log('ok');
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -216,6 +224,10 @@ class App extends React.Component {
         />
         <div className="bottom">
           <button type="button" onClick={this.downloadCSV}><i className="fa fa-download" /> Download CSV</button>
+        </div>
+        <div className="link" onClick={copyLink}>
+          <i className="fa fa-link" aria-hidden="true" />
+          <input id="link" value={document.location.href} type="text" />
         </div>
       </div>
     );

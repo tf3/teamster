@@ -133,3 +133,25 @@ button[disabled] {
 button {
   cursor: pointer;
 }
+
+.link, .link input {
+  color: #666;
+  background: #eee;
+}
+
+.link {
+  margin: 1em 0.5em;
+  cursor: pointer;
+}
+
+.link input {
+  border: none;
+  width: 90%;
+  padding-left: 0.3em;
+  cursor: pointer;
+}
+
+.link input:focus {
+  border: none;
+  outline: none;
+}
