@@ -22,7 +22,7 @@ const UnassignedList = ({
         <li>
           {person.name} &nbsp;
           <button type="button" onClick={() => deletePerson(person.name)}>
-            <span role="img" aria-label="delete">❌</span>
+            <i className="fa fa-trash" aria-hidden="true" />
           </button>
         </li>
       ))}
