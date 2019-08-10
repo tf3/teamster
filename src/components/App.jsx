@@ -1,7 +1,7 @@
 import React from 'react';
-import TeamList from './TeamList.jsx';
-import UnassignedList from './UnassignedList.jsx';
-import AddTeamForm from './AddTeamForm.jsx';
+import TeamList from './TeamList';
+import UnassignedList from './UnassignedList';
+import AddTeamForm from './AddTeamForm';
 
 const popRandom = (array) => {
   const index = Math.floor(Math.random() * array.length);
@@ -99,7 +99,6 @@ class App extends React.Component {
 
   // Moves all team members to unassigned. The team names and max members are unchanged.
   resetTeams(callback) {
-    if (!(callback instanceof Function)) callback = undefined;
     const { unassigned } = this.state;
     const oldTeamMembers = this.getAllMembers();
 

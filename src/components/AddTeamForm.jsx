@@ -42,11 +42,11 @@ class AddTeamForm extends React.Component {
     return (
       <div className="team">
         <form onSubmit={this.handleSubmit}>
-          <label>
+          <label htmlFor="name">
             Team name <br />
             <input type="text" name="name" value={name} onChange={this.handleFormInput} />
           </label>
-          <label>
+          <label htmlFor="maxMembers">
             Number of members <br />
             <input type="text" name="maxMembers" value={maxMembers} onChange={this.handleFormInput} />
           </label>

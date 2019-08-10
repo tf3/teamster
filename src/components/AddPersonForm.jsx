@@ -28,7 +28,7 @@ const AddPersonForm = ({ addPeople }) => {
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <label>
+      <label htmlFor="name">
         New person <br />
         <input type="text" name="name" onPaste={handlePaste} />
       </label>
