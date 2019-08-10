@@ -3,7 +3,8 @@ import AddPersonForm from './AddPersonForm';
 import Controls from './Controls';
 
 const UnassignedList = ({
-  unassigned, addPeople, assignTeams, reassignTeams, deletePerson, resetTeams, allTeamsFull,
+  unassigned, addPeople, assignTeams, reassignTeams, deletePerson, resetTeams,
+  allTeamsFull, allTeamsEmpty,
 }) => (
   <div className="unassigned">
     <Controls
@@ -12,6 +13,8 @@ const UnassignedList = ({
       resetTeams={resetTeams}
       unassigned={unassigned}
       allTeamsFull={allTeamsFull}
+      allTeamsEmpty={allTeamsEmpty}
+
     />
     <h3>Not assigned to a team</h3>
     <ol>

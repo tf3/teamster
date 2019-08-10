@@ -45,6 +45,7 @@ class App extends React.Component {
     this.addPeople = this.addPeople.bind(this);
     this.addTeam = this.addTeam.bind(this);
     this.allTeamsFull = this.allTeamsFull.bind(this);
+    this.allTeamsEmpty = this.allTeamsEmpty.bind(this);
     this.assignTeams = this.assignTeams.bind(this);
     this.reassignTeams = this.reassignTeams.bind(this);
     this.deletePerson = this.deletePerson.bind(this);
@@ -132,6 +133,11 @@ class App extends React.Component {
     return !teams.some(team => team.members.length < team.maxMembers);
   }
 
+  allTeamsEmpty() {
+    const { teams } = this.state;
+    return teams.every(team => team.members.length === 0);
+  }
+
   assignTeams() {
     const { unassigned, teams } = this.state;
     const newTeams = teams.slice(0);
@@ -206,9 +212,10 @@ class App extends React.Component {
           addPeople={this.addPeople}
           deletePerson={this.deletePerson}
           allTeamsFull={this.allTeamsFull}
+          allTeamsEmpty={this.allTeamsEmpty}
         />
         <div className="bottom">
-          <button type="button" onClick={this.downloadCSV}>Download CSV</button>
+          <button type="button" onClick={this.downloadCSV}><i className="fa fa-download" /> Download CSV</button>
         </div>
       </div>
     );

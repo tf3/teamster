@@ -44,6 +44,7 @@ h3 {
 
 .team {
   animation: appearFromRight 0.2s ease-in;
+  min-width: 10em;
 }
 
 .team button {
@@ -124,4 +125,8 @@ input {
 
 main {
   padding: 1em;
+}
+
+button[disabled] {
+  opacity: 0.5;
 }
