@@ -1,4 +1,5 @@
 const mongo = require('mongodb').MongoClient;
+
 const host = process.env.HOST || 'localhost';
 const port = process.env.DB_PORT || '27017';
 
