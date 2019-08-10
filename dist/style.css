@@ -16,6 +16,11 @@ header h1 {
   font-weight: normal;
 }
 
+h1 a {
+  color: #eee;
+  text-decoration: none;
+}
+
 #app, .container {
   margin: 0 auto;
   max-width: 46em;
