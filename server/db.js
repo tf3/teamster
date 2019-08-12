@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.DB_PORT || '27017';
+const user = process.env.DB_USER || 'admin';
+const password = process.env.DB_PASSWORD || '';
 
-mongoose.connect(`mongodb://${host}:${port}/team-builder`, { useNewUrlParser: true });
+mongoose.connect(`mongodb://${user}:${password}@${host}:${port}/team-builder?authSource=admin`,
+  { useNewUrlParser: true });
 const db = mongoose.connection;
 db.disconnect = mongoose.disconnect;
 
