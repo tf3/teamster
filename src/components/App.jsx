@@ -22,6 +22,7 @@ class App extends React.Component {
     this.getAllMembers = this.getAllMembers.bind(this);
     this.fetchFromServer = this.fetchFromServer.bind(this);
     this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
+    this.getUnpinnedTeamsWithoutMembers = this.getUnpinnedTeamsWithoutMembers.bind(this);
     this.downloadCSV = this.downloadCSV.bind(this);
     this.resetTeams = this.resetTeams.bind(this);
     this.resetUnpinnedTeams = this.resetUnpinnedTeams.bind(this);
@@ -50,6 +51,20 @@ class App extends React.Component {
       maxMembers: team.maxMembers,
       members: [],
     }));
+  }
+
+  getUnpinnedTeamsWithoutMembers() {
+    const { teams } = this.state;
+    const unpinnedTeams = teams.filter(team => !team.pinned);
+
+    return unpinnedTeams.map(team => (
+      {
+        name: team.name,
+        maxMembers: team.maxMembers,
+        members: [],
+        pinned: false,
+      }
+    ));
   }
 
   addPeople(people) {
@@ -105,15 +120,8 @@ class App extends React.Component {
     const unpinnedTeamMembers = unpinnedTeams.reduce((members, team) => (
       members.concat(team.members)
     ), []);
+    const unpinnedTeamsWithoutMembers = this.getUnpinnedTeamsWithoutMembers();
 
-    const unpinnedTeamsWithoutMembers = unpinnedTeams.map(team => (
-      {
-        name: team.name,
-        maxMembers: team.maxMembers,
-        members: [],
-        pinned: false,
-      }
-    ));
     this.setState({
       teams: [...pinnedTeams, ...unpinnedTeamsWithoutMembers],
       unassigned: [...unassigned, ...unpinnedTeamMembers],
@@ -155,9 +163,7 @@ class App extends React.Component {
   }
 
   reassignTeams() {
-    // this.resetUnpinnedTeams();
     this.resetUnpinnedTeams(this.assignTeams);
-    // this.resetTeams(this.assignTeams);
   }
 
   sendToServer() {
@@ -211,7 +217,13 @@ class App extends React.Component {
     return (
       <div>
         <div className="teams">
-          {teams.map(team => <TeamList team={team} deleteTeam={this.deleteTeam} togglePinned={this.togglePinned} />)}
+          {teams.map(team => (
+            <TeamList
+              team={team}
+              deleteTeam={this.deleteTeam}
+              togglePinned={this.togglePinned}
+            />
+          ))}
           <AddTeamForm addTeam={this.addTeam} />
         </div>
         <UnassignedList
@@ -225,10 +237,14 @@ class App extends React.Component {
           allTeamsEmpty={this.allTeamsEmpty}
         />
         <div className="bottom">
-          <button type="button" onClick={this.downloadCSV}><i className="fa fa-file-excel-o" /> Download CSV</button>  &nbsp;
-          <button type="button" onClick={() => downloadPdf(formatPdfData(this.state))}><i className="fa fa-file-pdf-o" /> Download PDF</button>
+          <button type="button" onClick={this.downloadCSV}>
+            <i className="fa fa-file-excel-o" /> Download CSV
+          </button>  &nbsp;
+          <button type="button" onClick={() => downloadPdf(formatPdfData(this.state))}>
+            <i className="fa fa-file-pdf-o" /> Download PDF
+          </button>
         </div>
-        <div className="link" onClick={copyLink}>
+        <div className="link" onClick={copyLink} role="button" tabIndex={0}>
           <i className="fa fa-link" aria-hidden="true" />
           <input id="link" value={document.location.href} type="text" readOnly />
         </div>
