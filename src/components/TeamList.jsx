@@ -1,9 +1,11 @@
 import React from 'react';
 
-const TeamList = ({ team, deleteTeam }) => (
-  <div className="team">
+const TeamList = ({ team, deleteTeam, togglePinned }) => (
+  <div className={`team ${team.pinned ? 'pinned' : ''}`}>
+    <button className="pin" type="button" onClick={() => togglePinned(team.name)}>
+      <i className="fa fa-thumb-tack" aria-hidden="true" />
+    </button>
     <button type="button" onClick={() => deleteTeam(team.name)}>
-      {/* <span role="img" aria-label="delete">❌</span> */}
       <i className="fa fa-trash" aria-hidden="true" />
     </button>
     <h3>{team.name} ({team.members.length}/{team.maxMembers})</h3>

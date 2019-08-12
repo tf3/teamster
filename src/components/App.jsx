@@ -24,7 +24,9 @@ class App extends React.Component {
     this.getTeamsWithoutMembers = this.getTeamsWithoutMembers.bind(this);
     this.downloadCSV = this.downloadCSV.bind(this);
     this.resetTeams = this.resetTeams.bind(this);
+    this.resetUnpinnedTeams = this.resetUnpinnedTeams.bind(this);
     this.sendToServer = this.sendToServer.bind(this);
+    this.togglePinned = this.togglePinned.bind(this);
   }
 
   componentDidMount() {
@@ -96,9 +98,35 @@ class App extends React.Component {
     });
   }
 
+  resetUnpinnedTeams(callback) {
+    const { unassigned, teams } = this.state;
+    const pinnedTeams = teams.filter(team => team.pinned);
+    const unpinnedTeams = teams.filter(team => !team.pinned);
+    const unpinnedTeamMembers = unpinnedTeams.reduce((members, team) => (
+      members.concat(team.members)
+    ), []);
+
+    const unpinnedTeamsWithoutMembers = unpinnedTeams.map(team => (
+      {
+        name: team.name,
+        maxMembers: team.maxMembers,
+        members: [],
+        pinned: false,
+      }
+    ));
+    this.setState({
+      teams: [...pinnedTeams, ...unpinnedTeamsWithoutMembers],
+      unassigned: [...unassigned, ...unpinnedTeamMembers],
+    }, () => {
+      callback();
+      this.sendToServer();
+    });
+  }
+
   allTeamsFull() {
     const { teams } = this.state;
-    return !teams.some(team => team.members.length < team.maxMembers);
+    const unpinnedTeams = teams.filter(team => !team.pinned);
+    return !unpinnedTeams.some(team => team.members.length < team.maxMembers);
   }
 
   allTeamsEmpty() {
@@ -108,10 +136,11 @@ class App extends React.Component {
 
   assignTeams() {
     const { unassigned, teams } = this.state;
-    const newTeams = teams.slice(0);
+    const pinnedTeams = teams.filter(team => team.pinned);
+    const unpinnedTeams = teams.filter(team => !team.pinned);
 
     while (unassigned.length > 0 && !this.allTeamsFull()) {
-      newTeams.forEach((team) => {
+      unpinnedTeams.forEach((team) => {
         if (team.members.length < team.maxMembers) {
           const person = popRandom(unassigned);
           if (person) team.members.push(person);
@@ -121,12 +150,14 @@ class App extends React.Component {
 
     this.setState({
       unassigned,
-      teams: newTeams,
+      teams: [...pinnedTeams, ...unpinnedTeams],
     }, this.sendToServer);
   }
 
   reassignTeams() {
-    this.resetTeams(this.assignTeams);
+    // this.resetUnpinnedTeams();
+    this.resetUnpinnedTeams(this.assignTeams);
+    // this.resetTeams(this.assignTeams);
   }
 
   sendToServer() {
@@ -141,6 +172,17 @@ class App extends React.Component {
     })
       .then(response => response.json())
       .catch(console.log);
+  }
+
+  togglePinned(teamName) {
+    const { teams } = this.state;
+    const newTeams = teams.slice(0);
+
+    const team = newTeams.find(({ name }) => name === teamName);
+    team.pinned = !team.pinned;
+    this.setState({
+      teams: newTeams,
+    }, this.sendToServer);
   }
 
   fetchFromServer() {
@@ -169,7 +211,7 @@ class App extends React.Component {
     return (
       <div>
         <div className="teams">
-          {teams.map(team => <TeamList team={team} deleteTeam={this.deleteTeam} />)}
+          {teams.map(team => <TeamList team={team} deleteTeam={this.deleteTeam} togglePinned={this.togglePinned} />)}
           <AddTeamForm addTeam={this.addTeam} />
         </div>
         <UnassignedList

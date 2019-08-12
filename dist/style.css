@@ -52,13 +52,22 @@ h3 {
   min-width: 10em;
 }
 
+.pinned {
+  background:#e6e6f5;
+}
+
 .team button {
   float: right;
   background: none;
   border: none;
   padding: 0;
-  margin: 0;
+  margin: 0.2em;
   visibility: hidden;
+}
+
+.pinned button.pin {
+  visibility: visible;
+  color: #5353ea;
 }
 
 .team:hover button {
