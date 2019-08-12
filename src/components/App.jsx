@@ -1,7 +1,47 @@
 import React from 'react';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 import TeamList from './TeamList';
 import UnassignedList from './UnassignedList';
 import AddTeamForm from './AddTeamForm';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+const formatPdfData = (data) => {
+  const formattedData = {
+    content: [],
+    styles: {
+      header: {
+        bold: true,
+        fontSize: 15,
+      },
+      headerGrey: {
+        bold: true,
+        fontSize: 15,
+        color: 'grey',
+      },
+    },
+    defaultStyle: {
+      fontSize: 12,
+    },
+  };
+
+  data.teams.forEach((team) => {
+    formattedData.content.push({ text: `\n${team.name}`, style: 'header' });
+    formattedData.content.push({ ol: team.members.map(member => member.name) });
+  });
+
+  if (data.unassigned.length > 0) {
+    formattedData.content.push({ text: '\nUnassigned', style: 'headerGrey' });
+    formattedData.content.push({ ol: data.unassigned.map(person => person.name) });
+  }
+
+  return formattedData;
+};
+
+const downloadPdf = (pdfData) => {
+  pdfMake.createPdf(pdfData).download('teams');
+};
 
 const popRandom = (array) => {
   const index = Math.floor(Math.random() * array.length);
@@ -38,11 +78,9 @@ const generateCSV = ({ teams, unassigned }) => {
 };
 
 const copyLink = () => {
-  // const link = document.querySelector('#link');
   const link = document.getElementById('link');
   link.select();
   document.execCommand('copy');
-  console.log('ok');
 };
 
 class App extends React.Component {
@@ -223,11 +261,12 @@ class App extends React.Component {
           allTeamsEmpty={this.allTeamsEmpty}
         />
         <div className="bottom">
-          <button type="button" onClick={this.downloadCSV}><i className="fa fa-download" /> Download CSV</button>
+          <button type="button" onClick={this.downloadCSV}><i className="fa fa-file-excel-o" /> Download CSV</button>  &nbsp;
+          <button type="button" onClick={() => downloadPdf(formatPdfData(this.state))}><i className="fa fa-file-pdf-o" /> Download PDF</button>
         </div>
         <div className="link" onClick={copyLink}>
           <i className="fa fa-link" aria-hidden="true" />
-          <input id="link" value={document.location.href} type="text" />
+          <input id="link" value={document.location.href} type="text" readOnly />
         </div>
       </div>
     );
