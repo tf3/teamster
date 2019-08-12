@@ -5,6 +5,7 @@ const port = process.env.DB_PORT || '27017';
 
 mongoose.connect(`mongodb://${host}:${port}/team-builder`, { useNewUrlParser: true });
 const db = mongoose.connection;
+db.disconnect = mongoose.disconnect;
 
 db.on('connect', () => {
   console.log('Connected to MongoDB successfully.');
