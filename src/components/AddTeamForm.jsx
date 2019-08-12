@@ -10,6 +10,12 @@ class AddTeamForm extends React.Component {
 
     this.handleFormInput = this.handleFormInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateInput = this.validateInput.bind(this);
+  }
+
+  validateInput() {
+    const { name, maxMembers } = this.state;
+    return name !== '' && maxMembers !== '' && !Number.isNaN(Number(maxMembers));
   }
 
   handleFormInput(e) {
@@ -23,18 +29,20 @@ class AddTeamForm extends React.Component {
     const { addTeam } = this.props;
     const team = this.state;
 
-    addTeam({
-      name: team.name,
-      maxMembers: Number(team.maxMembers),
-      members: [],
-    });
+    if (this.validateInput()) {
+      addTeam({
+        name: team.name,
+        maxMembers: Number(team.maxMembers),
+        members: [],
+      });
 
-    this.setState({
-      name: '',
-      maxMembers: '',
-    });
+      this.setState({
+        name: '',
+        maxMembers: '',
+      });
 
-    e.target.name.focus();
+      e.target.name.focus();
+    }
   }
 
   render() {

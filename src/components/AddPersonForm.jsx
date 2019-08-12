@@ -3,8 +3,12 @@ import React from 'react';
 const AddPersonForm = ({ addPeople }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    addPeople([{ name: e.target.name.value }]);
-    e.target.name.value = '';
+    const name = e.target.name.value;
+
+    if (name !== '') {
+      addPeople([{ name }]);
+      e.target.name.value = '';
+    }
   };
 
   // Starting at the first character, this strips out all non-letters up to
