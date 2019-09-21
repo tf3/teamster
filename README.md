@@ -1,6 +1,6 @@
 # Teamster
 
-Team creation tool. Demo at [ec2-54-198-68-81.compute-1.amazonaws.com](http://ec2-54-198-68-81.compute-1.amazonaws.com).
+Team creation tool.
 
 ## Screenshot
 
