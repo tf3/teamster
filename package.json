@@ -18,7 +18,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "compression": "^1.7.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mongoose": "^5.7.5",
     "pdfmake": "^0.1.58",
     "react": "^16.8.6",
