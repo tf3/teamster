@@ -16,15 +16,15 @@
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.6",
+    "babel-loader": "^8.3.0",
     "compression": "^1.7.4",
     "express": "^4.17.1",
     "mongoose": "^5.7.5",
     "pdfmake": "^0.1.58",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "devDependencies": {
     "jest": "^24.8.0",
